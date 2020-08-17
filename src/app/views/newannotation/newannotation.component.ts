@@ -257,7 +257,14 @@ export class NewannotationComponent implements OnInit {
    * @param array
    */
   removeConcepts(name: any, array: any[]) {
-
+      array.forEach((item, index) => {
+          if (item === name) {
+              array.splice(index, 1);
+              array = [...array];
+              this.model.concepts.splice(index, 1);
+              this.model.concepts = [...this.model.concepts];
+          }
+      });
   }
 
   saveAnnotation() {
