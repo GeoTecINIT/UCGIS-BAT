@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-sm-4 col-md-2">
+              Detail
+            </div>
+            <div class="col-sm-4 offset-md-4 col-md-5"></div>
+            <div class="col-sm-4 col-md-1">
+              <div *ngIf="selectedFile; else loading" class="row">
+                <div class="cols-xs-2 col-md-5 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : (currentUser?.organizations?.indexOf(selectedFile.orgId) != -1)?  'Remove' : 'You can remove only your own annotations'}}">
+                  <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
+                    [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(selectedFile.orgId) == -1)">
+                    <i class="fa fa-trash-o fa-lg"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ng-container *ngIf="selectedFile; else loading">
+            <div class="row">
+              <div class="col-md-6">
+                <h1>{{ selectedFile.title }}</h1>
+              </div>
+            </div>
+            <p>{{ selectedFile.description }}</p>
+            <hr />
+            <!-- Concepts -->
+            <div *ngIf="selectedFile && selectedFile.concepts && selectedFile.concepts.length > 0" class="card card-accent-info">
+              <div class="card-header">
+                <h5><strong>Knowledge</strong></h5>
+              </div>
+              <div class="row card-body"  style="background-color: #faf9f8" *ngIf="isReady">
+                <button *ngFor="let mk of selectedFile.concepts" type="button" class="btn btn-pill"
+                        [ngClass]="'bok-' + ( mk | slice:1:3 )">
+                  <a href="{{ getInfoFromBok(mk).url }}" target="_blank"> {{ mk }} -
+                    {{getInfoFromBok(mk).name}} </a>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #loading>
+            <app-loading-indicator></app-loading-indicator>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+<ng-template #popTemplate>
+  <app-popup idOP="{{selectedFile._id}}"></app-popup>
+</ng-template>
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Are you sure you want to delete this annotation?</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>After you delete it it won't be accessible to anyone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="dangerModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger" (click)="removeFile(selectedFile._id)" routerLink="/list">Delete</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,198 @@
+<div class="animated fadeIn" id="newAnnotation">
+  <h1 class="title">{{ title }}</h1>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card card-accent-primary">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-sm-4 col-md-4">
+              <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+              <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
+                         [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{item.name}}
+                </ng-template>
+              </ng-select>
+              <button *ngIf="isAnonymous && userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
+                      routerLink="/organization">
+                &nbsp;You need to join or create an organization before you can save an occupational profile.
+              </button>
+            </div>
+            <div class="col-sm-12 col-md-12 text-right">
+              <button  *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list">
+                Save
+              </button>
+              <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
+                      *ngIf="!isAnonymous">
+                Login to save
+              </button>
+            </div>
+          </div>
+        </div>
+
+      <div class="card-body">
+        <!--upload file-->
+        <div class="card card-accent-secondary">
+            <div class="card-header">
+              Upload pdf
+            </div>
+            <div class="card-body" style="background-color: #faf9f8">
+              <div class="container row col-md-12">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input primary" id="customFile1"
+                           (change)="onFileChange1($event)">
+                    <label class="custom-file-label" for="customFile1">Upload resource (pdf)</label>
+                  </div>
+                  <div class="row" *ngIf="uploadPercent1">
+                    <div class="col-md-6">
+                      Progress: {{uploadPercent1  | async | number:'3.0-0'}} %
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 col-sm-5 text-left" *ngIf="file1 != null">
+                    <h4> {{file1.name}}</h4>
+                    <br>
+                    <h6 class="text-level text-secondary">
+                      Type: {{ file1.type }} - Size: {{ file1.size / 1048576 | number}} Mb </h6>
+                    <h6 *ngIf="errorFile1" class="text-danger">
+                      Warning:
+                      It looks this file has malformed metadata or not metadata at all. See <a
+                      href="https://firebasestorage.googleapis.com/v0/b/eo4geo-uji.appspot.com/o/manuals%2FBoKAnnotationGuidelines-v1.pdf?alt=media&token=572418a8-5112-4a44-a242-25bb269d6a49"
+                      target="_blank"> guidelines </a> on how to annotate a PDF with eo4geo BoK.</h6>
+                </div>
+              </div>
+
+            </div>
+        </div>
+
+        <div class="card card-accent-secondary">
+          <div class="card-header">Knowledge related</div>
+          <div class="card-body" style="background-color: #faf9f8">
+            <div class="col-md-12">
+              <p *ngIf="model.concepts.length == 0">Upload a file to see to annotate bok concetps</p>
+              <button *ngFor="let mk of allConcepts" type="button"
+                      class="btn btn-pill" [ngClass]="'bok-' + (mk | slice: 1:3)" tooltip="Click to remove"
+                      (click)="removeConcepts(mk, allConcepts); ">
+                <i class="fa fa-close"></i> {{ mk }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- bok visualizer-->
+        <div class="card card-accent-secondary">
+          <div class="card-header">
+            Search knowledge
+            <small>Associated skills will be automatically added</small>
+            <span
+              tooltip="Browse in the BoK for knowledge required for your new job offer Once in the required knowledge, press the button 'Add' it will link the concept and the skills dependent on it."
+              class="badge badge-primary badge-pill">i</span>
+          </div>
+          <div class="card-body" style="background-color: #faf9f8">
+            <div class="row text-left">
+              <div class="col-md-12">
+                <div *ngIf="isShowingSkillsTip && associatedSkillsToDelete==0" class="skillsTip">
+                  You added one BoK concept as knowledge.
+                </div>
+                <div *ngIf="isShowingSkillsTip && associatedSkillsToDelete>0" class="skillsTip">
+                  You added one BoK concept as knowledge and {{associatedSkillsToDelete}} related skills.
+                </div>
+              </div>
+            </div>
+            <div class="row text-center">
+              <div class="col-lg-6 col-sm-6">
+                <div class="row text-center">
+                  <div class="offset-md-2 col-md-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend" dropdown>
+                        <button type="button" class="btn btn-primary">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </div>
+                      <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
+                             class="form-control" [(ngModel)]="searchInputField" (keyup)="searchInBok(searchInput.value)"
+                             placeholder="Search Knowledge" />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary" [disabled]="hasResults"
+                            tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge();">
+                      Add
+                    </button>
+                  </div>
+
+                </div>
+                <div id="bubbles" (click)="cleanTip()">
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-6 text-justify">
+                <div class="row text-left">
+                  <div class="col-md-6">
+                    <a href="javascript:;" (click)="hasResults = !hasResults; currentConcept=''"
+                       *ngIf="!hasResults && currentConcept != 'GIST'">
+                      < Back to search results </a>
+                  </div>
+                  <div class="col-md-6">
+                    <a href="javascript:;" (click)="hasResults = false; cleanResults()" *ngIf="hasResults">
+                      &nbsp; X Clear search results </a>
+                  </div>
+                </div>
+                <br>
+                <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                <div #textBoK id="textBoK" [hidden]="hasResults">
+                </div>
+                <div class="col" *ngIf="hasResults">
+                  <h3 class="center">
+                    {{ selectedNodes.length }} result(s) for
+                    {{ searchInput.value }}
+                  </h3>
+                  <div *ngFor="let item of selectedNodes; index as i">
+                    <div *ngIf="i < limitSearchTo && i >= limitSearchFrom">
+                      <div class="inline">{{ item.nameShort }}</div>
+                      <div class="inline" [innerHTML]="
+                              item.name | truncate: 100:searchInput.value
+                            "></div>
+                      <a class="inline"  href="javascript:;"  (click)="navigateToConcept(item.nameShort)">
+                        Details
+                      </a>
+                      <div class="small" [innerHTML]="
+                              item.description | truncate: 100:searchInput.value
+                            "></div>
+                    </div>
+                  </div>
+                  <div>
+                    <br />
+                    <div class="row">
+                      <div class="col-md-6 text-right">
+                        <a *ngIf="limitSearchFrom > 0" (click)="decrementLimit()">
+                          << Previous </a>
+                      </div>
+                      <div class="col-md-6 text-left"> <a *ngIf="limitSearchTo < selectedNodes.length"
+                                                          (click)="incrementLimit()">
+                        Next >>
+                      </a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-12 text-right">
+          <button type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list"
+                  *ngIf="isAnonymous">
+            Save
+          </button>
+          <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
+                  *ngIf="!isAnonymous">
+            Login to save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+.btn-pill {
+  margin: 2px;
+}
+
+.btn-pill a {
+  color: #faf9f8 !important;
+}
+
+.progress {
+  margin-top: 1em;
+}
+
+.btn-list {
+  display: list-item;
+}
+
+.no-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.btn-pill.fields {
+  margin: 2px;
+  pointer-events: none;
+}
+.btn-pill.skills{
+  margin: 2px;
+  pointer-events: none;
+  display: block;
+}
+
+.row {
+  margin-left: inherit;
+  margin-right: inherit;
+}
+.ma {
+  margin: auto;
+}
