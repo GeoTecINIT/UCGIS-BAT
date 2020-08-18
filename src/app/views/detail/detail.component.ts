@@ -30,7 +30,6 @@ export class DetailComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     public afAuth: AngularFireAuth,
-    public bokService: BokService,
   ) {
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
@@ -46,9 +45,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.getFileId();
-    setTimeout(() => {
-          this.isReady = true;
-      }, 3000);
   }
   getFileId(): void {
     const _id = this.route.snapshot.paramMap.get('name');
@@ -60,15 +56,13 @@ export class DetailComponent implements OnInit {
   }
 
   getInfoFromBok(code: any ) {
-    const concept = {url : '', name: ''};
     let cleanCode = code.split(']')[0];
       cleanCode = cleanCode.split('[')[1];
 
-    const info = this.bokService.getConceptInfoByCode(cleanCode);
-      concept.url = info.permalink;
-      concept.name = info.name;
-    return concept;
+    const info = 'https://bok.eo4geo.eu/' + cleanCode;
+    return info;
   }
+
   removeFile(id: string) {
       this.otherService.removeOther(id);
   }

@@ -64,13 +64,13 @@ export class ListComponent implements OnInit {
         this.isAnonymous = true;
         this.otherService
           .subscribeToOther()
-          .subscribe(occuProfiles => {
+          .subscribe(other => {
             this.annotations = [];
-            /*occuProfiles.forEach(op => {
-              if (op.isPublic) {
-                this.matches.push(op);
+              other.forEach(ot => {
+              if (ot.isPublic) {
+                this.annotations.push(ot);
               }
-            });*/
+            });
             this.filteredAnnotations = this.annotations;
           });
       }

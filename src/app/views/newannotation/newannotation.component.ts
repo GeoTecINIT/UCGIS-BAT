@@ -39,7 +39,7 @@ export class NewannotationComponent implements OnInit {
   title: string;
   allConcepts = [];
 
-  model = new Other('', '', '', '' , '', 'Other', 'Other', true, '', '', '', [], 3, null, null);
+  model = new Other('', '', '', '' , '', 'Other', 'Other', false, '', '', '', [], 3, null, null);
 
   userOrgs: Organization[] = [];
   saveOrg: Organization;
@@ -59,7 +59,7 @@ export class NewannotationComponent implements OnInit {
 
   meta1 = null;
 
-  closeResult = '';
+  hasConcepts = true;
 
   observer: MutationObserver;
   lastBoKTitle = 'GIST';
@@ -180,9 +180,10 @@ export class NewannotationComponent implements OnInit {
       .textContent;
     if (!this.model.concepts.includes(concept)) {
       const codeConcept = concept.split(']')[0];
-      if ( this.allConcepts.indexOf(concept) === -1) {
+      console.log('Antes!!! ', concept, ' --- ', this.allConcepts );
+        if ( this.allConcepts.indexOf(concept) === -1) {
         this.allConcepts.push(concept);
-        this.model.concepts.push(codeConcept + ']');
+        this.model.concepts.push(concept);
       }
     }
     this.isShowingSkillsTip = true;
@@ -230,13 +231,16 @@ export class NewannotationComponent implements OnInit {
             pdfDoc.getMetadata().then(metadataObject => {
               this.meta1 = metadataObject;
               this.model.title = this.meta1.info['Title'];
-              this.model.concepts = this.getBokCodeConceptsFromMeta(this.meta1);
-              this.allConcepts = this.getBokConceptsFromMeta(this.meta1);
+              this.model.concepts = this.getBokConceptsFromMeta(this.meta1);
+              this.allConcepts =  this.getBokConceptsFromMeta(this.meta1);
               this.model.url = url;
               this.model.name = this.meta1.info['Title'];
               this.model.userId = this.currentUser._id;
               this.model.orgName = this.saveOrg.name;
               this.model.orgId = this.saveOrg._id;
+              if ( this.model.concepts.length === 0 ) {
+                  this.hasConcepts = false;
+              }
             }).catch(function (err) {
               console.log('Error getting meta data');
               console.log(err);
@@ -268,6 +272,7 @@ export class NewannotationComponent implements OnInit {
   }
 
   saveAnnotation() {
+    this.model.isPublic = this.model.isPublic;
     this.otherService.addNewOther(this.model);
   }
 
@@ -301,25 +306,4 @@ export class NewannotationComponent implements OnInit {
     return concepts;
   }
 
-  getBokCodeConceptsFromMeta(meta) {
-    const concepts = [];
-    // concepts are in Subject metadata
-    if (meta && meta.info && meta.info.Subject) {
-      const rdf = meta.info.Subject.split(' ');
-      rdf.forEach(rdfEl => {
-        const rel = rdfEl.split(':');
-        // if it's a eo4geo concept save the code
-        if (rel[0] === 'eo4geo') {
-          if (rel[1] !== '') {
-            if (rel[1].endsWith(';')) {
-              concepts.push('[' + rel[1].slice(0, -1) + ']');
-            } else {
-              concepts.push('[' + rel[1] + ']');
-            }
-          }
-        }
-      });
-    }
-    return concepts;
-  }
 }

@@ -19,7 +19,7 @@
             <span [hidden]="hasOrgs" class="badge badge-pill badge-success">N</span>
             <span [hidden]="numPending < 1" class="badge badge-pill badge-success">{{numPending}}</span>
           </a>
-          <a class="btn text-primary" href="#" [hidden]="isAnonymous" routerLink="/list"><i class="icon-home"></i>&nbsp;My annotations</a>
+          <a class="btn text-primary" href="#" [hidden]="isAnonymous" routerLink="/list"><i class="icon-home"></i>&nbsp;My annotated PDFs</a>
           <a class="btn text-primary" href="#" (click)="openModal()" [hidden]="!isAnonymous">
             <i class="icon-logout"></i> <span [innerText]="isAnonymous ? '&nbsp;Login' : '&nbsp;Log Out'"></span></a>
           <a class="btn text-primary" href="#" routerLink="/" (click)="logOut()" [hidden]="isAnonymous">
