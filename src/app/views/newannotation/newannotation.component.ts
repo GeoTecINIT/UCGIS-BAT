@@ -26,6 +26,7 @@ import * as pdfjs from 'pdfjs-dist';
 import { BokService } from '../../services/bok.service';
 import {LoginComponent} from '../login/login.component';
 import { OtherService} from '../../services/other.service';
+import {PDFDocument} from 'pdf-lib';
 
 @Component({
   selector: 'app-newannotation',
@@ -37,7 +38,6 @@ export class NewannotationComponent implements OnInit {
   _id: string;
   mode: string;
   title: string;
-  allConcepts = [];
 
   model = new Other('', '', '', '' , '', 'Other', 'Other', false, '', '', '', [], 3, null, null);
 
@@ -77,6 +77,7 @@ export class NewannotationComponent implements OnInit {
   isAnonymous = true;
   type = -1;
 
+  messageUploadFile = 'Upload a file to see annotated bok concepts';
 
   formGroup = this.fb.group({
     file: [null, Validators.required]
@@ -128,6 +129,16 @@ export class NewannotationComponent implements OnInit {
 
   ngOnInit() {
     bok.visualizeBOKData('#bubbles', '#textBoK');
+    this.observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if ((<any>mutation.target).children[1].innerText !== this.lastBoKTitle) {
+                this.lastBoKTitle = (<any>mutation.target).children[1].innerText;
+                this.hasResults = false;
+            }
+        });
+    });
+    const config = { attributes: true, childList: true, characterData: true };
+    this.observer.observe(this.textBoK.nativeElement, config);
     this.getMode();
   }
 
@@ -135,14 +146,30 @@ export class NewannotationComponent implements OnInit {
     this.mode = this.route.snapshot.paramMap.get('mode');
     if (this.mode === 'duplicate' || this.mode === 'copy') {
       if (this.mode === 'copy') {
-        this.title = 'Copy BoK Match';
+        this.title = 'Edit BoK Annotate';
       } else {
         this.title = 'Duplicate BoK Match';
-
       }
+        this.getOtherById();
+        this.fillForm();
     } else {
-      this.title = 'Annotate with BoK Tool';
+      this.title = 'BoK Annotation Tool';
     }
+  }
+
+  getOtherById(): void {
+      this._id = this.route.snapshot.paramMap.get('name');
+      this.otherService
+          .getOtherById(this._id)
+          .subscribe(abt => {
+            this.model = abt;
+          });
+  }
+
+  fillForm(): void {
+      this.otherService
+          .getOtherById(this._id)
+          .subscribe(abt => (this.model = abt));
   }
 
   searchInBok(text: string) {
@@ -176,14 +203,14 @@ export class NewannotationComponent implements OnInit {
   }
 
   addBokKnowledge() {
+      this.associatedSkillsToDelete = 0;
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
     if (!this.model.concepts.includes(concept)) {
       const codeConcept = concept.split(']')[0];
-      console.log('Antes!!! ', concept, ' --- ', this.allConcepts );
-        if ( this.allConcepts.indexOf(concept) === -1) {
-        this.allConcepts.push(concept);
+        if ( this.model.concepts.indexOf(concept) === -1) {
         this.model.concepts.push(concept);
+            this.associatedSkillsToDelete++;
       }
     }
     this.isShowingSkillsTip = true;
@@ -221,6 +248,7 @@ export class NewannotationComponent implements OnInit {
     this.uploadPercent1 = task.percentageChanges();
     task.snapshotChanges().pipe(
       finalize(() => {
+          this.messageUploadFile = 'Loading annotations';
         // take storage reference to download file
         const ref = this.storage.ref(filePath);
         ref.getDownloadURL().subscribe(url => {
@@ -230,50 +258,61 @@ export class NewannotationComponent implements OnInit {
             // get metadata from pdf document
             pdfDoc.getMetadata().then(metadataObject => {
               this.meta1 = metadataObject;
-              this.model.title = this.meta1.info['Title'];
-              this.model.concepts = this.getBokConceptsFromMeta(this.meta1);
-              this.allConcepts =  this.getBokConceptsFromMeta(this.meta1);
-              this.model.url = url;
-              this.model.name = this.meta1.info['Title'];
-              this.model.userId = this.currentUser._id;
-              this.model.orgName = this.saveOrg.name;
-              this.model.orgId = this.saveOrg._id;
-              if ( this.model.concepts.length === 0 ) {
-                  this.hasConcepts = false;
+              if ( this.meta1.info['Title']) {
+                  this.model.title = this.meta1.info['Title'];
+                  this.model.name = this.meta1.info['Title'];
+              } else if (this.model.title === '' ) {
+                  this.model.title = file.name;
+                  this.model.name = file.name;
+              } else {
+                  this.model.name = this.model.title;
               }
+              if ( this.model.concepts.length > 0 ) {
+                this.model.concepts = this.model.concepts.concat(this.getBokConceptsFromMeta(this.meta1));
+              } else {
+                this.model.concepts = this.getBokConceptsFromMeta(this.meta1);
+              }
+              this.model.url = url;
             }).catch(function (err) {
               console.log('Error getting meta data');
               console.log(err);
             });
+              if ( this.model.concepts.length === 0 ) {
+                  this.hasConcepts = false;
+              }
           }).catch(function (err) {
             console.log('Error getting PDF from url');
             console.log(err);
           });
         });
+
       })
     )
       .subscribe();
+      this.messageUploadFile = 'Upload a file to see annotated bok concepts';
   }
 
-  /**
-   * TO DO
-   * @param name
-   * @param array
-   */
+
   removeConcepts(name: any, array: any[]) {
       array.forEach((item, index) => {
           if (item === name) {
-              array.splice(index, 1);
-              array = [...array];
               this.model.concepts.splice(index, 1);
               this.model.concepts = [...this.model.concepts];
           }
       });
+      this.associatedSkillsToDelete = this.model.concepts.length;
   }
 
   saveAnnotation() {
-    this.model.isPublic = this.model.isPublic;
-    this.otherService.addNewOther(this.model);
+    this.model.name = this.model.title;
+    this.model.userId = this.currentUser._id;
+    this.model.orgName = this.saveOrg.name;
+    this.model.orgId = this.saveOrg._id;
+    if (this.mode === 'copy') {
+      this.otherService.updateOther(this._id, this.model);
+    } else {
+      this.otherService.addNewOther(this.model);
+    }
   }
 
   openModal() {
@@ -290,6 +329,7 @@ export class NewannotationComponent implements OnInit {
         // if it's a eo4geo concept save the code
         if (rel[0] === 'eo4geo') {
           if (rel[1] !== '') {
+
             if (rel[1].endsWith(';')) {
               const code = rel[1].slice(0, -1);
               const nameConcept = this.bokService.getConceptInfoByCode(code);
@@ -305,5 +345,68 @@ export class NewannotationComponent implements OnInit {
     }
     return concepts;
   }
+
+    async downloadFile( ) {
+        const existingPdfBytes = await fetch(this.model.url).then(res => res.arrayBuffer());
+        // Load a PDFDocument from the existing PDF bytes
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const currentMetadata = pdfDoc.getSubject();
+        if ( currentMetadata !== undefined) {
+            const type = this.readType(currentMetadata);
+            const metadata = this.getSubjectMetadata(this.model);
+            pdfDoc.setSubject(metadata);
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const urlToDownload = window.URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.download = this.model.title;
+            link.href = urlToDownload;
+            link.click();
+        } else {
+            const metadata = this.getSubjectMetadata(this.model);
+            pdfDoc.setSubject(metadata);
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const urlToDownload = window.URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.download = this.model.title;
+            link.href = urlToDownload;
+            link.click();
+        }
+    }
+
+    getSubjectMetadata(selectedFile: Other) {
+
+        let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
+        subject = subject + '<> dc:title "' + selectedFile.title + '"';
+        selectedFile.concepts.forEach(know => {
+            const bokCode = know.split(']', 1)[0].split('[', 2)[1];
+            if (bokCode) {
+                subject = subject + '; dc:relation eo4geo:' + bokCode;
+            }
+        });
+      subject = subject + '.';
+        return subject;
+    }
+
+    readType(currentMetadata: any ) {
+        let type = '';
+        if (currentMetadata.length > 0) {
+            const rdf = currentMetadata.split(' . ');
+
+            rdf.forEach(rdfEl => {
+                const rel = rdfEl.split(';');
+                if ( rel.length > 1 ) {
+                    const dctype  = rdfEl.split(':');
+                    dctype.forEach(ty => {
+                        if ( ty.indexOf('type') > -1 ) {
+                            type = ty.split('"').length > 1 ? ty.split('"')[1] : '';
+                        }
+                    });
+                }
+            });
+        }
+        return type;
+    }
 
 }

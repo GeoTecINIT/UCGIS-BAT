@@ -62,17 +62,6 @@ export class ListComponent implements OnInit {
         });
       } else {
         this.isAnonymous = true;
-        this.otherService
-          .subscribeToOther()
-          .subscribe(other => {
-            this.annotations = [];
-              other.forEach(ot => {
-              if (ot.isPublic) {
-                this.annotations.push(ot);
-              }
-            });
-            this.filteredAnnotations = this.annotations;
-          });
       }
     });
   }
@@ -83,7 +72,6 @@ export class ListComponent implements OnInit {
         this.releaseNotesModal.basicModal.config = config;
         this.releaseNotesModal.basicModal.show({});
       }
-
   }
 
   removeFile(id: string) {
@@ -104,52 +92,29 @@ export class ListComponent implements OnInit {
     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
     // Load a PDFDocument from the existing PDF bytes
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const currentMetadata = pdfDoc.getSubject();
-    const type = this.readType(currentMetadata);
-    const metadata = this.getSubjectMetadata(selectedFile, type);
+    const metadata = this.getSubjectMetadata(selectedFile);
     pdfDoc.setSubject(metadata);
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const urlToDownload = window.URL.createObjectURL(blob);
-    let link = document.createElement("a");
+    let link = document.createElement('a');
       link.download = selectedFile.title;
       link.href = urlToDownload;
       link.click();
   }
 
 
-  getSubjectMetadata(selectedFile: Other, type: any) {
+  getSubjectMetadata(selectedFile: Other) {
 
     let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
-      subject = subject + '<> dc:hasPart [ dc:type "' + type + '"; dc:title "' + selectedFile.title + '"';
+      subject = subject + '<> dc:title "' + selectedFile.title + '"';
     selectedFile.concepts.forEach(know => {
         const bokCode = know.split(']', 1)[0].split('[', 2)[1];
         if (bokCode) {
           subject = subject + '; dc:relation eo4geo:' + bokCode;
         }
       });
-      subject = subject + '  ] .';
-
+    subject = subject + '.';
     return subject;
-  }
-
-  readType(currentMetadata: any ) {
-     let type = '';
-      if (currentMetadata.length > 0) {
-          const rdf = currentMetadata.split(' . ');
-
-          rdf.forEach(rdfEl => {
-              const rel = rdfEl.split(';');
-              if ( rel.length > 1 ) {
-                  const dctype  = rdfEl.split(':');
-                  dctype.forEach(ty => {
-                      if ( ty.indexOf('type') > -1 ) {
-                         type = ty.split('"').length > 1 ? ty.split('"')[1] : '';
-                      }
-                  });
-              }
-          });
-      }
-      return type;
   }
 }

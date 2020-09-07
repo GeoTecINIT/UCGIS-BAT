@@ -13,7 +13,7 @@
         </h5>
       </div>
       <div class="text-center">
-        <h5>Disclaimer: you are using a prototype release of the Annotate with Bok Tool. This tool is currently under
+        <h5>Disclaimer: you are using a prototype release of the BoK Annotation Tool. This tool is currently under
           development
           and we are still experimenting with functionality and user interface. Bugs may occur. Thank you for your
           patience.
@@ -24,7 +24,7 @@
           <div class="row">
             <div class="col-sm-4 col-md-2" >
               <button type="button" class="btn btn-block btn-outline-primary" routerLink="/newannotation/empty">
-                New annotated PDF
+                Annotate new PDF
               </button>
             </div>
             <div class="col-sm-4 offset-md-4 col-md-4">
@@ -43,12 +43,13 @@
         <div class="card-body">
           <div *ngFor="let m of filteredAnnotations">
             <div class="row" *ngIf="m.isPublic || (currentUser?.organizations?.indexOf(m.orgId) > -1)">
-              <div class="col-md-11">
+              <div class="col-md-10">
                 <button type="button" class="btn text-justify" routerLink="/detail/{{ m._id }}">
                   <span>
                     <h1 style="display: inline;">{{ m.title }}</h1>
-                    <h6 *ngIf="!m.isPublic" style="display: inline;" class="text-level text-primary">Private</h6>
                     <h6 style="display: inline;" class="text-level text-secondary">{{ m.orgName }}</h6>
+                    <h6 *ngIf="!m.isPublic" style="display: inline;" class="text-level">Private</h6>
+                    <h6 *ngIf="m.isPublic" style="display: inline;" class="text-level">Public</h6>
                     <br>
                     {{ m.concepts.length}} Knowledge
                   </span>
@@ -60,15 +61,21 @@
                 </button>
               </div>
 
-              <div class="col-md-1">
+              <div class="col-md-2">
                 <div class="row">
-                  <div class="col-3 col-sm-3 col-md-4 no-padding">
+                  <div class="col-3 col-sm-3 col-md-3 no-padding">
+                    <button type="button" class="btn btn-block btn-link" tooltip="Edit"
+                            popoverTitle="Edit pdf file" placement="top"  routerLink="/newannotation/copy/{{ m._id }}">
+                      <i class="fa fa-edit fa-lg mt-4"></i>
+                    </button>
+                  </div>
+                  <div class="col-3 col-sm-3 col-md-3 no-padding">
                     <button type="button" class="btn btn-block btn-link" tooltip="Download"
                       popoverTitle="Download pdf file" placement="top"  (click)="downloadFile(m.url, m)">
                       <i class="fa fa-download fa-lg mt-4"></i>
                     </button>
                   </div>
-                  <div class="col-3 col-sm-3 col-md-5 no-padding"
+                  <div class="col-3 col-sm-3 col-md-4 no-padding"
                     tooltip="{{isAnonymous? 'Login to be able to remove' : currentUser?.organizations?.indexOf(m.orgId) != -1 ?  'Remove' : 'You can remove only your own annotations'}}">
                     <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                       (click)="dangerModal.show()"

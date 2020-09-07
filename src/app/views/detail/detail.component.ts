@@ -8,6 +8,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import {BokService} from '../../services/bok.service';
 import {OtherService} from '../../services/other.service';
 import {Other} from '../../model/file.model';
+import {PDFDocument} from 'pdf-lib';
 
 @Component({
   selector: 'app-detail',
@@ -66,4 +67,36 @@ export class DetailComponent implements OnInit {
   removeFile(id: string) {
       this.otherService.removeOther(id);
   }
+
+  async downloadFile(url: string, selectedFile: Other) {
+      const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+      // Load a PDFDocument from the existing PDF bytes
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const currentMetadata = pdfDoc.getSubject();
+      const metadata = this.getSubjectMetadata(selectedFile);
+      pdfDoc.setSubject(metadata);
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const urlToDownload = window.URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.download = selectedFile.title;
+      link.href = urlToDownload;
+      link.click();
+  }
+
+
+  getSubjectMetadata(selectedFile: Other) {
+
+      let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
+      subject = subject + '<> dc:title "' + selectedFile.title + '"';
+      selectedFile.concepts.forEach(know => {
+          const bokCode = know.split(']', 1)[0].split('[', 2)[1];
+          if (bokCode) {
+              subject = subject + '; dc:relation eo4geo:' + bokCode;
+          }
+      });
+    subject = subject + '.';
+      return subject;
+  }
+
 }

@@ -8,7 +8,7 @@
             <div class="col-sm-4 col-md-4">
               <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
             </div>
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-5 col-md-5" style="margin-right: 10px;">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
                          [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
                 <ng-template ng-optgroup-tmp let-item="item">
@@ -20,19 +20,70 @@
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
             </div>
-            <div class="col-sm-12 col-md-12 text-right">
-              <button  *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list">
-                Save
-              </button>
-              <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
+
+            <div class="col-sm-12 col-md-12 text-right" style="margin-top: 15px;">
+
+              <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" style="float: right;" (click)="openModal()"
                       *ngIf="!isAnonymous">
                 Login to save
+              </button>
+              <button  *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="saveAnnotation()" style="float: right;" routerLink="/list">
+                Save
+              </button>
+              <button type="button" class="btn btn-pill btn-primary col-sm-2 col-md-2 " tooltip="Download" style="float: right;"
+                      popoverTitle="Download pdf file" placement="top"  (click)="downloadFile()">
+                <i class="fa fa-download fa-lg"></i> Download
               </button>
             </div>
           </div>
         </div>
 
       <div class="card-body">
+        <form #newMForm="ngForm">
+          <!-- general info card -->
+          <div class="card card-accent-secondary" *ngIf="isAnonymous">
+            <div class="card-header">
+              General Information
+              <span
+                      tooltip=" BoK Matching tool can compare two resources and discover common knowledge. Add a title and a description to be able to save it."
+                      class="badge badge-primary badge-pill">i</span>
+            </div>
+            <div class="card-body" style="background-color: #faf9f8">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="model.title"
+                           name="title" required />
+                  </div>
+                </div>
+                <div style="margin-top: 8px;" *ngIf="isAnonymous" class="col-md-3">
+                    <span class="input-group-prepend">
+                      <div class="pr-1"> Visibility: Private  </div>
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="knowledges" name="isPublic"
+                               [(ngModel)]="model.isPublic" />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1">Public </div>
+                    </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="description">Description </label>
+                    <textarea class="form-control" id="description" placeholder="Description" name="textarea-input"
+                              [(ngModel)]="model.description" rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="pull-right">
+                <h6> * Mandatory fields to save annotated PDF</h6>
+              </div>
+            </div>
+          </div>
+        </form>
         <!--upload file-->
         <div class="card card-accent-secondary">
             <div class="card-header">
@@ -42,7 +93,7 @@
               <div class="container row col-md-12">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input primary" id="customFile1"
+                    <input type="file" class="custom-file-input primary" id="customFile1" accept="application/pdf"
                            (change)="onFileChange1($event)">
                     <label class="custom-file-label" for="customFile1">Upload resource (pdf)</label>
                   </div>
@@ -50,17 +101,6 @@
                     <div class="col-md-6">
                       Progress: {{uploadPercent1  | async | number:'3.0-0'}} %
                     </div>
-                  </div>
-                  <div style="margin-top: 8px;">
-                    <span class="input-group-prepend">
-                      <div class="pr-1"> Visibility: Draft </div>
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="knowledges" name="isPublic"
-                               [(ngModel)]="model.isPublic" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1">Publish </div>
-                    </span>
                   </div>
                 </div>
                 <div class="col-lg-5 col-sm-5 text-left" *ngIf="file1 != null">
@@ -83,11 +123,11 @@
           <div class="card-header">Knowledge annotated</div>
           <div class="card-body" style="background-color: #faf9f8">
             <div class="col-md-12">
-              <p *ngIf="hasConcepts">Upload a file to see to annotated bok concepts</p>
-              <p *ngIf="!hasConcepts">Search and add knowledge to start annotating the PDF</p>
-              <button *ngFor="let mk of allConcepts" type="button"
+              <p *ngIf="hasConcepts && model.concepts.length == 0 ">{{ messageUploadFile }}</p>
+              <p *ngIf="!hasConcepts && model.concepts.length == 0 ">Search and add knowledge to start annotating the PDF</p>
+              <button *ngFor="let mk of model.concepts" type="button"
                       class="btn btn-pill" [ngClass]="'bok-' + (mk | slice: 1:3)" tooltip="Click to remove"
-                      (click)="removeConcepts(mk, allConcepts); ">
+                      (click)="removeConcepts(mk, model.concepts); ">
                 <i class="fa fa-close"></i> {{ mk }}
               </button>
             </div>
@@ -106,11 +146,8 @@
           <div class="card-body" style="background-color: #faf9f8">
             <div class="row text-left">
               <div class="col-md-12">
-                <div *ngIf="isShowingSkillsTip && associatedSkillsToDelete==0" class="skillsTip">
+                <div *ngIf="isShowingSkillsTip " class="skillsTip">
                   You added one BoK concept as knowledge.
-                </div>
-                <div *ngIf="isShowingSkillsTip && associatedSkillsToDelete>0" class="skillsTip">
-                  You added one BoK concept as knowledge and {{associatedSkillsToDelete}} related skills.
                 </div>
               </div>
             </div>
@@ -194,12 +231,12 @@
           </div>
         </div>
       </div>
-        <div class="col-md-12 text-right">
-          <button type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list"
+        <div class="col-md-12 col-sm-12 text-right" style="margin-bottom: 15px;">
+          <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="saveAnnotation()" routerLink="/list"
                   *ngIf="isAnonymous">
             Save
           </button>
-          <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
+          <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="openModal()"
                   *ngIf="!isAnonymous">
             Login to save
           </button>

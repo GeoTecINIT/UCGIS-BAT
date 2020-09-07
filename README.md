@@ -1,4 +1,4 @@
-## Annotate with Bok Tool - EO4GEO
+## BoK Annotation Tool - EO4GEO
 
 #### Prerequisites
 Before you begin, make sure your development environment includes `Node.js®` and an `npm` package manager.

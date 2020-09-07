@@ -8,8 +8,14 @@
               Detail
             </div>
             <div class="col-sm-4 offset-md-4 col-md-5"></div>
-            <div class="col-sm-4 col-md-1">
+            <div class="col-sm-4 col-md-1 no-padding">
               <div *ngIf="selectedFile; else loading" class="row">
+                <div class="col-sm-3 col-md-4 no-padding">
+                  <button type="button" class="btn btn-block btn-link" tooltip="Download"
+                          popoverTitle="Download pdf file" placement="top"  (click)="downloadFile(selectedFile.url, selectedFile)">
+                    <i class="fa fa-download fa-lg"></i>
+                  </button>
+                </div>
                 <div class="cols-xs-2 col-md-5 no-padding"
                   tooltip="{{isAnonymous? 'Login to be able to remove' : (currentUser?.organizations?.indexOf(selectedFile.orgId) != -1)?  'Remove' : 'You can remove only your own annotations'}}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
@@ -31,17 +37,23 @@
             <p>{{ selectedFile.description }}</p>
             <hr />
             <!-- Concepts -->
-            <div *ngIf="selectedFile && selectedFile.concepts && selectedFile.concepts.length > 0" class="card card-accent-info">
-              <div class="card-header">
-                <h5><strong>Knowledge</strong></h5>
+            <div class="row" *ngIf="selectedFile && selectedFile.concepts && selectedFile.concepts.length > 0">
+              <div class="col-md-4">
+                <label>Knowledge</label>
+                <span
+                        tooltip="The job offer knowledge represent the comprehensive awareness in certain areas/domains, which complete the list of theoretical capacity learning."
+                        class="badge badge-primary badge-pill">i</span>
               </div>
-              <div class="row card-body"  style="background-color: #faf9f8" >
+            </div>
+            <div class="row text-left">
+              <div class="col-md-12">
                 <button *ngFor="let mk of selectedFile.concepts" type="button" class="btn btn-pill"
                         [ngClass]="'bok-' + ( mk | slice:1:3 )">
                   <a href="{{ getInfoFromBok(mk) }}" target="_blank"> {{ mk }} </a>
                 </button>
               </div>
-            </div>
+
+             </div>
           </ng-container>
           <ng-template #loading>
             <app-loading-indicator></app-loading-indicator>
