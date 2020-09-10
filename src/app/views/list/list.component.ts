@@ -84,7 +84,9 @@ export class ListComponent implements OnInit {
     this.filteredAnnotations = this.annotations.filter(
       it =>
         it.title.toLowerCase().includes(search) ||
-        it.description.toLowerCase().includes(search)
+        it.description.toLowerCase().includes(search) ||
+        it.orgName.toLowerCase().includes(search) ||
+        it.division.toLowerCase().includes(search)
     );
   }
 

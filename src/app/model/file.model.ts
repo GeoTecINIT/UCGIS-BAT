@@ -17,7 +17,8 @@ export class Other extends Object {
     public concepts: any[],
     public type: number,
     public updatedAt: any,
-    public createdAt: any
+    public createdAt: any,
+    public division: string
   ) {
     super();
   }

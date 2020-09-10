@@ -47,7 +47,7 @@
                 <button type="button" class="btn text-justify" routerLink="/detail/{{ m._id }}">
                   <span>
                     <h1 style="display: inline;">{{ m.title }}</h1>
-                    <h6 style="display: inline;" class="text-level text-secondary">{{ m.orgName }}</h6>
+                    <h6 style="display: inline;" class="text-level text-secondary">{{ m.orgName }}  <span *ngIf="m.division"> - {{ m.division }} </span></h6>
                     <h6 *ngIf="!m.isPublic" style="display: inline;" class="text-level">Private</h6>
                     <h6 *ngIf="m.isPublic" style="display: inline;" class="text-level">Public</h6>
                     <br>

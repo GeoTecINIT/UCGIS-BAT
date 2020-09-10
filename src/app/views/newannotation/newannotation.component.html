@@ -5,12 +5,12 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-2 col-md-2">
               <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
             </div>
-            <div class="col-sm-5 col-md-5" style="margin-right: 10px;">
+            <div class="col-sm-3 col-md-3">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
-                         [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
+                         [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg" (change)="loadDivisions()">
                 <ng-template ng-optgroup-tmp let-item="item">
                   {{item.name}}
                 </ng-template>
@@ -20,17 +20,27 @@
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
             </div>
+            <div class="col-sm-2 col-md-2">
+              <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Division </p>
+            </div>
+            <div class="col-sm-2 col-md-2">
+              <ng-select *ngIf="userDivisions.length > 0" [items]="userDivisions" name="userDivisions" bindLabel="name"
+                         [multiple]="false" [(ngModel)]="saveDiv">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{item}}
+                </ng-template>
+              </ng-select>
+             </div>
 
-            <div class="col-sm-12 col-md-12 text-right" style="margin-top: 15px;">
-
-              <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" style="float: right;" (click)="openModal()"
+            <div class="col-sm-3 col-md-3 text-right" >
+              <button type="submit" class="btn btn-pill btn-primary" style="float: right;" (click)="openModal()"
                       *ngIf="!isAnonymous">
                 Login to save
               </button>
-              <button  *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="saveAnnotation()" style="float: right;" routerLink="/list">
+              <button *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" style="float: right;" routerLink="/list">
                 Save
               </button>
-              <button type="button" class="btn btn-pill btn-primary col-sm-2 col-md-2 " tooltip="Download" style="float: right;"
+              <button type="button" class="btn btn-pill btn-primary" tooltip="Download" style="float: right;"
                       popoverTitle="Download pdf file" placement="top"  (click)="downloadFile()">
                 <i class="fa fa-download fa-lg"></i> Download
               </button>
@@ -232,11 +242,11 @@
         </div>
       </div>
         <div class="col-md-12 col-sm-12 text-right" style="margin-bottom: 15px;">
-          <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="saveAnnotation()" routerLink="/list"
+          <button type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list"
                   *ngIf="isAnonymous">
             Save
           </button>
-          <button type="submit" class="btn btn-pill btn-primary col-sm-2 col-md-2" (click)="openModal()"
+          <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
                   *ngIf="!isAnonymous">
             Login to save
           </button>
