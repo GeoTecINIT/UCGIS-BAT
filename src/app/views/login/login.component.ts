@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user && !user.isAnonymous) {
         this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
+        // Close modal after register & google login
+        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+          this.modalService.hide(i);
+        }
       }
     });
   }
@@ -42,6 +46,10 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => this.return = params['return'] || '/newannotation/empty');
     if (this.afAuth.auth.currentUser && !this.afAuth.auth.currentUser.isAnonymous) {
       this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
+      // Close modal after register & google login
+      for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+        this.modalService.hide(i);
+      }
     }
   }
 
@@ -70,10 +78,10 @@ export class LoginComponent implements OnInit {
 
     this.afAuth.auth.signInWithPopup(provider).then(result => {
       // This gives you a Google Access Token. You can use it to access the Google API.
-      if (result.additionalUserInfo.isNewUser) {
+      /*if (result.additionalUserInfo.isNewUser) {
         // deletes and signout user
         this.afAuth.auth.currentUser.delete();
-      }
+      }*/
       const token = result.credential;
       // The signed-in user info.
       const user = result.user;
