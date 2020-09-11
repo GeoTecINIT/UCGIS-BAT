@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user && !user.isAnonymous) {
         this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
+        // Close modal after register & google login
+        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+          this.modalService.hide(i);
+        }
       }
     });
   }
@@ -42,6 +46,10 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => this.return = params['return'] || '/newannotation/empty');
     if (this.afAuth.auth.currentUser && !this.afAuth.auth.currentUser.isAnonymous) {
       this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
+      // Close modal after register & google login
+      for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+        this.modalService.hide(i);
+      }
     }
   }
 
