@@ -95,7 +95,7 @@ export class DetailComponent implements OnInit {
               subject = subject + '; dc:relation eo4geo:' + bokCode;
           }
       });
-    subject = subject + '.';
+    subject = subject + ' .';
       return subject;
   }
 
