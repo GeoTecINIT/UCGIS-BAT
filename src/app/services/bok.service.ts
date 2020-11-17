@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface BoKConcept {
   permalink?: String;
@@ -18,14 +19,22 @@ export class BokService {
   public allRelation: Observable<any>;
   public allConcepts: Observable<any>;
   BOK_PERMALINK_PREFIX = 'https://bok.eo4geo.eu/';
+  private URL_BASE = 'https://findinbok.firebaseio.com/';
 
-  constructor(db: AngularFireDatabase) {
+  constructor(db: AngularFireDatabase, private http: HttpClient) {
+
+    this.http.get(this.URL_BASE + '.json')
+      .subscribe(data => {
+        this.concepts = this.parseConcepts(data['current']['concepts']);
+        this.relations = data['current']['relations'];
+      });
+/*
     db.list('current/concepts').valueChanges().subscribe(res => {
       this.concepts = this.parseConcepts(res);
     });
     db.list('current/relations').valueChanges().subscribe(res => {
       this.relations = res;
-    });
+    });*/
   }
 
   parseConcepts(dbRes) {
