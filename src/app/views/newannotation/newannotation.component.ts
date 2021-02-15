@@ -14,16 +14,8 @@ import { finalize } from 'rxjs/operators';
 import * as bok from '@eo4geo/bok-dataviz';
 import * as jsPDF from 'jspdf';
 
-// import * as fs from 'fs';
-// import * as parsePdf from 'parse-pdf';
+import * as pdfjs from 'pdfjs-dist';
 
-// const fs = require('fs');
-// const parsePdf = require('parse-pdf');
-
-// import * as jspdf from 'parse-pdf';
-
-import * as pdfjs from 'pdfjs-dist/es5/build/pdf';
-import { pdfjsworker } from 'pdfjs-dist/es5/build/pdf.worker.entry';
 import { BokService } from '../../services/bok.service';
 import { LoginComponent } from '../login/login.component';
 import { OtherService } from '../../services/other.service';
@@ -252,7 +244,6 @@ export class NewannotationComponent implements OnInit {
   }
 
   uploadFile1(file) {
-    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsworker;
     const filePath = 'other/custom-' + encodeURI(file.name);
     const task = this.storage.upload(filePath, file);
     this.errorFile1 = false;
@@ -264,7 +255,7 @@ export class NewannotationComponent implements OnInit {
         const ref = this.storage.ref(filePath);
         ref.getDownloadURL().subscribe(url => {
           // get pdf document from url
-          pdfjs.getDocument(url).promise.then(pdfDoc_ => {
+          pdfjs.getDocument(url).then(pdfDoc_ => {
             const pdfDoc = pdfDoc_;
             // get metadata from pdf document
             pdfDoc.getMetadata().then(metadataObject => {
