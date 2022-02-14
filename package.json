@@ -38,6 +38,7 @@
     "@coreui/icons": "0.3.0",
     "@eo4geo/bok-dataviz": "^5.2.5",
     "@ng-select/ng-select": "^2.20.0",
+    "@types/pdfjs-dist": "^2.10.378",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.5",
@@ -81,7 +82,6 @@
     "tslint": "^5.14.0",
     "typescript": "~3.2.4",
     "pdfjs-dist": "^2.3.200",
-    "zone.js": "^0.8.29",
     "acorn": "^6.0.0",
     "acorn-dynamic-import": "^4.0.0"
   },

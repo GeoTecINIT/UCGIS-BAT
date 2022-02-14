@@ -97,9 +97,10 @@ export class OrganizationService {
 
   addNewOrganization(org: Organization): string {
     org.name = 'New Organization';
+    console.log (org.name);
     const idOrg = this.db.createId();
     org._id = idOrg;
-    this.db.collection<Organization>(collection).doc(idOrg).set(org);
+    this.db.collection<Organization>(collection).doc(idOrg).set(Object.assign({}, org));
     return idOrg;
   }
 

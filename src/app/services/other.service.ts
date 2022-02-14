@@ -29,7 +29,7 @@ export class OtherService {
     this.db
       .collection(collection)
       .doc(id)
-      .set(newFile);
+      .set(Object.assign({}, newFile));
   }
 
   removeOther(otherId) {

@@ -58,7 +58,7 @@ export class UserService {
 
   addNewUser(user: firebase.User) {
     const usr = new User(user);
-    this.db.collection<User>(collection).doc(user.uid).set(usr);
+    this.db.collection<User>(collection).doc(user.uid).set(Object.assign({}, usr));
   }
 
 
