@@ -11,7 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
-import * as bok from '@eo4geo/bok-dataviz';
+import * as bok from '@ucgis/find-in-bok-dataviz-tools';
 
 import { BokService } from '../../services/bok.service';
 import { LoginComponent } from '../login/login.component';
@@ -58,17 +58,17 @@ export class NewannotationComponent implements OnInit {
   hasConcepts = true;
 
   observer: MutationObserver;
-  lastBoKTitle = 'GIST';
+  lastBoKTitle = 'UCGIS';
 
   searchInputField = '';
-  currentConcept = 'GIST';
+  currentConcept = 'UCGIS';
 
   isShowingSkillsTip = false;
   uploadPercent1 = null;
 
   associatedSkillsToDelete = 0;
 
-  @ViewChild('textBoK') textBoK: ElementRef;
+  @ViewChild('textInfo') textInfo: ElementRef;
 
   isAnonymous = true;
   type = -1;
@@ -125,7 +125,7 @@ export class NewannotationComponent implements OnInit {
   }
 
   ngOnInit() {
-    bok.visualizeBOKData('#bubbles', '#textBoK');
+    bok.visualizeBOKData('https://ucgis-bok-default-rtdb.firebaseio.com/', 'current');
     this.observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if ((<any>mutation.target).children[1].innerText !== this.lastBoKTitle) {
@@ -135,7 +135,7 @@ export class NewannotationComponent implements OnInit {
       });
     });
     const config = { attributes: true, childList: true, characterData: true };
-    this.observer.observe(this.textBoK.nativeElement, config);
+    this.observer.observe(this.textInfo.nativeElement, config);
     this.getMode();
   }
 
@@ -192,7 +192,7 @@ export class NewannotationComponent implements OnInit {
   cleanResults() {
     this.searchInputField = '';
     bok.searchInBoK('');
-    this.navigateToConcept('GIST');
+    this.navigateToConcept('UCGIS');
   }
 
   cleanTip() {
@@ -201,7 +201,7 @@ export class NewannotationComponent implements OnInit {
 
   addBokKnowledge() {
     this.associatedSkillsToDelete = 0;
-    const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
+    const concept = this.textInfo.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
     if (!this.model.concepts.includes(concept)) {
       const codeConcept = concept.split(']')[0];
