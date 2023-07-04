@@ -18,8 +18,8 @@ export class BokService {
   public relations: any[];
   public allRelation: Observable<any>;
   public allConcepts: Observable<any>;
-  BOK_PERMALINK_PREFIX = 'https://bok.eo4geo.eu/';
-  private URL_BASE = 'https://findinbok.firebaseio.com/';
+  BOK_PERMALINK_PREFIX = 'https://ucgis-bok.web.app/';
+  private URL_BASE = 'https://ucgis-bok.web.app/';
 
   constructor(db: AngularFireDatabase, private http: HttpClient) {
 

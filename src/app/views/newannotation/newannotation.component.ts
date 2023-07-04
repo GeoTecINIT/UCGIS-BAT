@@ -333,7 +333,7 @@ export class NewannotationComponent implements OnInit {
       rdf.forEach(rdfEl => {
         const rel = rdfEl.split(':');
         // if it's a eo4geo concept save the code
-        if (rel[0] === 'eo4geo') {
+        if (rel[0] === 'ucgis') {
           if (rel[1] !== '') {
 
             if (rel[1].endsWith(';')) {
@@ -383,12 +383,12 @@ export class NewannotationComponent implements OnInit {
 
   getSubjectMetadata(selectedFile: Other) {
 
-    let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
+    let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://ucgis-bok.web.app/> . ';
     subject = subject + '<> dc:title "' + selectedFile.title + '"';
     selectedFile.concepts.forEach(know => {
       const bokCode = know.split(']', 1)[0].split('[', 2)[1];
       if (bokCode) {
-        subject = subject + '; dc:relation eo4geo:' + bokCode;
+        subject = subject + '; dc:relation ucgis:' + bokCode;
       }
     });
     subject = subject + ' .';

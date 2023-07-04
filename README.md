@@ -1,9 +1,9 @@
-## EO4GEO - BoK Annotation Tool (BAT)
+## UCGIS - BoK Annotation Tool (BAT)
 
-The [BoK Annotation Tool (BAT)](https://eo4geo-bat.web.app) allows to easily annotate (associate) any PDF document with EO4GEO BoK concepts, to be used later in the BoK Matching Tool (BMT) to discover best matches. BAT automatically edits the pdf file’s metadata, adding the requested annotations using the Resource Description Framework (RDF).
+The [BoK Annotation Tool (BAT)](https://ucgis-tools-bat.web.app) allows to easily annotate (associate) any PDF document with UCGIS BoK concepts, to be used later in the BoK Matching Tool (BMT) to discover best matches. BAT automatically edits the pdf file’s metadata, adding the requested annotations using the Resource Description Framework (RDF).
 
 #### Authors
-The EO4GEO BoK tools are developed by the [Geospatial Technologies Research Group](http://geotec.uji.es/) (GEOTEC) from the University Jaume I, Castellón (Spain) and are Licensed under GNU GPLv3.
+The UCGIS BoK tools are developed by the [Geospatial Technologies Research Group](http://geotec.uji.es/) (GEOTEC) from the University Jaume I, Castellón (Spain) and are Licensed under GNU GPLv3.
 
 
 #### Prerequisites
@@ -27,7 +27,7 @@ npm install -g @angular/cli
 
 ``` bash
 # clone the repo
-$ git clone https://github.com/GeoTecINIT/EO4GEO-ABT.git my-project
+$ git clone https://github.com/GeoTecINIT/UCGIS-BAT.git my-project
 
 # go into app's directory
 $ cd my-project

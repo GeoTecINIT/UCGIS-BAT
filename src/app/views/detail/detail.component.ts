@@ -60,7 +60,7 @@ export class DetailComponent implements OnInit {
     let cleanCode = code.split(']')[0];
       cleanCode = cleanCode.split('[')[1];
 
-    const info = 'https://bok.eo4geo.eu/' + cleanCode;
+    const info = 'https://ucgis-bok.web.app/' + cleanCode;
     return info;
   }
 
@@ -87,12 +87,12 @@ export class DetailComponent implements OnInit {
 
   getSubjectMetadata(selectedFile: Other) {
 
-      let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
+    let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://ucgis-bok.web.app/> . ';
       subject = subject + '<> dc:title "' + selectedFile.title + '"';
       selectedFile.concepts.forEach(know => {
           const bokCode = know.split(']', 1)[0].split('[', 2)[1];
           if (bokCode) {
-              subject = subject + '; dc:relation eo4geo:' + bokCode;
+            subject = subject + '; dc:relation ucgis:' + bokCode;
           }
       });
     subject = subject + ' .';
