@@ -59,8 +59,8 @@
      id="namedview905"
      showgrid="false"
      inkscape:zoom="0.74319736"
-     inkscape:cx="982.5152"
-     inkscape:cy="112.0251"
+     inkscape:cx="998.66165"
+     inkscape:cy="124.13494"
      inkscape:window-x="213"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
@@ -75,16 +75,63 @@
     <g
        id="Capa_1-2"
        data-name="Capa 1">
-      <text
-         font-size="62px"
-         fill="#005ca3"
-         font-family="Poppins-Regular, Poppins"
+      <g
+         aria-label="BOK ANNOTATION"
          id="text897"
-         x="1108.29"
-         y="144.19185"
-         style="font-size:64px;fill:#58595b;fill-opacity:1"><tspan
+         style="font-size:64px;font-family:Poppins-Regular, Poppins;fill:#58595b;fill-opacity:1">
+        <path
+           d="M 1113.54,144.19185 V 98.223099 h 7.2188 q 6.2812,0 9.1875,0.8125 4.125,1.093751 6.5625,4.062501 2.4375,2.96875 2.4375,7 0,2.625 -1.125,4.78125 -1.0938,2.125 -3.5938,4 4.1875,1.96875 6.125,4.9375 1.9375,2.9375 1.9375,6.96875 0,3.875 -2,7.0625 -2,3.1875 -5.1562,4.78125 -3.1563,1.5625 -8.7188,1.5625 z m 8.75,-37.625 v 9.6875 h 1.9063 q 3.1875,0 4.7187,-1.34375 1.5625,-1.34375 1.5625,-3.65625 0,-2.15625 -1.4687,-3.40625 -1.4688,-1.28125 -4.4688,-1.28125 z m 0,17.5 v 11.78125 h 2.1875 q 5.4375,0 7.3125,-1.375 1.9063,-1.375 1.9063,-4 0,-2.96875 -2.2188,-4.6875 -2.2187,-1.71875 -7.375,-1.71875 z"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
-           id="tspan957">BOK ANNOTATION</tspan></text>
+           id="path1646" />
+        <path
+           d="m 1172.3838,97.066849 q 9.75,0 16.75,7.062501 7.0312,7.0625 7.0312,17.21875 0,10.0625 -6.9375,17.03125 -6.9062,6.96875 -16.7812,6.96875 -10.3438,0 -17.1875,-7.15625 -6.8438,-7.15625 -6.8438,-17 0,-6.59375 3.1875,-12.125 3.1875,-5.53125 8.75,-8.75 5.5938,-3.250001 12.0313,-3.250001 z m -0.094,8.562501 q -6.375,0 -10.7187,4.4375 -4.3438,4.4375 -4.3438,11.28125 0,7.625 5.4688,12.0625 4.25,3.46875 9.75,3.46875 6.2187,0 10.5937,-4.5 4.375,-4.5 4.375,-11.09375 0,-6.5625 -4.4062,-11.09375 -4.4063,-4.5625 -10.7188,-4.5625 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1648" />
+        <path
+           d="m 1204.4775,98.223099 h 8.8438 V 114.0356 L 1225.79,98.223099 h 10.5313 l -16.0625,20.500001 17.625,25.46875 h -10.375 l -14.1875,-20.40625 v 20.40625 h -8.8438 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1650" />
+        <path
+           d="m 1276.04,98.223099 h 8.875 l 17.6875,45.968751 h -9.0937 l -3.5938,-9.46875 h -18.75 l -3.75,9.46875 h -9.0937 z m 4.5,12.187501 -6.125,15.78125 h 12.2188 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1652" />
+        <path
+           d="m 1309.4463,98.223099 h 8.375 L 1337.54,128.4731 V 98.223099 h 8.75 v 45.968751 h -8.4062 l -19.6875,-30.15625 v 30.15625 h -8.75 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1654" />
+        <path
+           d="m 1356.8213,98.223099 h 8.375 L 1384.915,128.4731 V 98.223099 h 8.75 v 45.968751 h -8.4062 l -19.6875,-30.15625 v 30.15625 h -8.75 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1656" />
+        <path
+           d="m 1425.8838,97.066849 q 9.75,0 16.75,7.062501 7.0312,7.0625 7.0312,17.21875 0,10.0625 -6.9375,17.03125 -6.9062,6.96875 -16.7812,6.96875 -10.3438,0 -17.1875,-7.15625 -6.8438,-7.15625 -6.8438,-17 0,-6.59375 3.1875,-12.125 3.1875,-5.53125 8.75,-8.75 5.5938,-3.250001 12.0313,-3.250001 z m -0.094,8.562501 q -6.375,0 -10.7187,4.4375 -4.3438,4.4375 -4.3438,11.28125 0,7.625 5.4688,12.0625 4.25,3.46875 9.75,3.46875 6.2187,0 10.5937,-4.5 4.375,-4.5 4.375,-11.09375 0,-6.5625 -4.4062,-11.09375 -4.4063,-4.5625 -10.7188,-4.5625 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1658" />
+        <path
+           d="m 1453.3838,98.223099 h 25.4062 v 8.625001 h -8.375 v 37.34375 h -8.875 V 106.8481 h -8.1562 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1660" />
+        <path
+           d="m 1498.79,98.223099 h 8.875 l 17.6875,45.968751 h -9.0937 l -3.5938,-9.46875 h -18.75 l -3.75,9.46875 h -9.0937 z m 4.5,12.187501 -6.125,15.78125 h 12.2188 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1662" />
+        <path
+           d="m 1527.6338,98.223099 h 25.4062 v 8.625001 h -8.375 v 37.34375 h -8.875 V 106.8481 h -8.1562 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1664" />
+        <path
+           d="m 1558.415,98.223099 h 8.6875 v 45.968751 h -8.6875 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1666" />
+        <path
+           d="m 1598.6338,97.066849 q 9.75,0 16.75,7.062501 7.0312,7.0625 7.0312,17.21875 0,10.0625 -6.9375,17.03125 -6.9062,6.96875 -16.7812,6.96875 -10.3438,0 -17.1875,-7.15625 -6.8438,-7.15625 -6.8438,-17 0,-6.59375 3.1875,-12.125 3.1875,-5.53125 8.75,-8.75 5.5938,-3.250001 12.0313,-3.250001 z m -0.094,8.562501 q -6.375,0 -10.7187,4.4375 -4.3438,4.4375 -4.3438,11.28125 0,7.625 5.4688,12.0625 4.25,3.46875 9.75,3.46875 6.2187,0 10.5937,-4.5 4.375,-4.5 4.375,-11.09375 0,-6.5625 -4.4062,-11.09375 -4.4063,-4.5625 -10.7188,-4.5625 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1668" />
+        <path
+           d="m 1630.6963,98.223099 h 8.375 L 1658.79,128.4731 V 98.223099 h 8.75 v 45.968751 h -8.4062 l -19.6875,-30.15625 v 30.15625 h -8.75 z"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';fill:#58595b;fill-opacity:1"
+           id="path1670" />
+      </g>
       <line
          x1="1081.5"
          y1="56.560001"
