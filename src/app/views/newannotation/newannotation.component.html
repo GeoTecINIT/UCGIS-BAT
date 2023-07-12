@@ -191,7 +191,7 @@
                 <div class="row text-left">
                   <div class="col-md-6">
                     <a href="javascript:;" (click)="hasResults = !hasResults; currentConcept=''"
-                       *ngIf="!hasResults && currentConcept != 'GIST'">
+                       *ngIf="!hasResults && currentConcept != 'UCGIS'">
                       < Back to search results </a>
                   </div>
                   <div class="col-md-6">
@@ -200,7 +200,7 @@
                   </div>
                 </div>
                 <br>
-                <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                <h5 [hidden]="currentConcept == ''">Knowledge</h5>
                 <div #textInfo id="textInfo" [hidden]="hasResults">
                 </div>
                 <div class="col" *ngIf="hasResults">
