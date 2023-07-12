@@ -102,11 +102,11 @@ export class NewannotationComponent implements OnInit {
     public bokService: BokService,
     private modalService: BsModalService
   ) {
-    this.isAnonymous = false;
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
         this.userService.getUserById(user.uid).subscribe(userDB => {
           this.currentUser = new User(userDB);
+          this.isAnonymous = false;
           if (this.currentUser.organizations && this.currentUser.organizations.length > 0) {
             this.currentUser.organizations.forEach(orgId => {
               this.organizationService.getOrganizationById(orgId).subscribe(org => {
@@ -114,7 +114,6 @@ export class NewannotationComponent implements OnInit {
                   this.userOrgs.push(org);
                   this.saveOrg = this.userOrgs[0];
                   this.loadDivisions();
-                  this.isAnonymous = true;
                 }
               });
             });

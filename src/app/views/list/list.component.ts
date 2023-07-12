@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
   filteredAnnotations: any[];
   searchText: string;
   knowledgeFilter: Boolean = true;
-  isAnonymous = null;
+  isAnonymous = true;
   currentUser: User = new User();
   pdfFile = PDFDocument;
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
@@ -43,7 +43,7 @@ export class ListComponent implements OnInit {
     public afAuth: AngularFireAuth) {
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
-        this.isAnonymous = user.isAnonymous;
+        this.isAnonymous = false;
         this.userService.getUserById(user.uid).subscribe(userDB => {
           if (userDB) {
             this.currentUser = new User(userDB);

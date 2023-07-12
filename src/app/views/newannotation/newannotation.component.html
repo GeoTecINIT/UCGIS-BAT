@@ -15,9 +15,9 @@
                   {{item.name}}
                 </ng-template>
               </ng-select>
-              <button *ngIf="isAnonymous && userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
+              <button *ngIf="!isAnonymous && userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
                       routerLink="/organization">
-                &nbsp;You need to join or create an organization before you can save an occupational profile.
+                &nbsp;You need to join or create an organization before you can save an annotated file.
               </button>
             </div>
             <div class="col-sm-2 col-md-2">
@@ -34,10 +34,10 @@
 
             <div class="col-sm-3 col-md-3 text-right" >
               <button type="submit" class="btn btn-pill btn-primary" style="float: right;" (click)="openModal()"
-                      *ngIf="!isAnonymous">
+                      *ngIf="isAnonymous">
                 Login to save
               </button>
-              <button *ngIf="isAnonymous" type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" style="float: right;" routerLink="/list">
+              <button *ngIf="!isAnonymous && userOrgs.length > 0" type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" style="float: right;" routerLink="/list">
                 Save
               </button>
               <button type="button" class="btn btn-pill btn-primary" tooltip="Download" style="float: right;"
@@ -51,7 +51,7 @@
       <div class="card-body">
         <form #newMForm="ngForm">
           <!-- general info card -->
-          <div class="card card-accent-secondary" *ngIf="isAnonymous">
+          <div class="card card-accent-secondary" *ngIf="!isAnonymous">
             <div class="card-header">
               General Information
               <span
@@ -67,7 +67,7 @@
                            name="title" required />
                   </div>
                 </div>
-                <div style="margin-top: 8px;" *ngIf="isAnonymous" class="col-md-3">
+                <div style="margin-top: 8px;" *ngIf="!isAnonymous" class="col-md-3">
                     <span class="input-group-prepend">
                       <div class="pr-1"> Visibility: Private  </div>
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
@@ -243,11 +243,11 @@
       </div>
         <div class="col-md-12 col-sm-12 text-right" style="margin-bottom: 15px;">
           <button type="submit" class="btn btn-pill btn-primary" (click)="saveAnnotation()" routerLink="/list"
-                  *ngIf="isAnonymous">
+                  *ngIf="!isAnonymous">
             Save
           </button>
           <button type="submit" class="btn btn-pill btn-primary" (click)="openModal()"
-                  *ngIf="!isAnonymous">
+                  *ngIf="isAnonymous">
             Login to save
           </button>
         </div>
