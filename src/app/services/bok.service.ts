@@ -18,8 +18,8 @@ export class BokService {
   public relations: any[];
   public allRelation: Observable<any>;
   public allConcepts: Observable<any>;
-  BOK_PERMALINK_PREFIX = 'https://ucgis-bok.web.app/';
-  private URL_BASE = 'https://ucgis-bok.web.app/';
+  BOK_PERMALINK_PREFIX = 'https://gistbok-bok.ucgis.org/';
+  private URL_BASE = 'https://gistbok-bok.ucgis.org/';
 
   constructor(db: AngularFireDatabase, private http: HttpClient) {
 
