@@ -60,7 +60,7 @@ export class DetailComponent implements OnInit {
     let cleanCode = code.split(']')[0];
       cleanCode = cleanCode.split('[')[1];
 
-    const info = 'https://gistbok-bok.ucgis.org/' + cleanCode;
+    const info = 'https://gistbok-topics.ucgis.org/' + cleanCode;
     return info;
   }
 
@@ -87,7 +87,7 @@ export class DetailComponent implements OnInit {
 
   getSubjectMetadata(selectedFile: Other) {
 
-    let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://gistbok-bok.ucgis.org/> . ';
+    let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://gistbok-topics.ucgis.org/> . ';
       subject = subject + '<> dc:title "' + selectedFile.title + '"';
       selectedFile.concepts.forEach(know => {
           const bokCode = know.split(']', 1)[0].split('[', 2)[1];

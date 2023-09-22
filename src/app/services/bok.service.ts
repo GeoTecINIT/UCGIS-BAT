@@ -18,8 +18,8 @@ export class BokService {
   public relations: any[];
   public allRelation: Observable<any>;
   public allConcepts: Observable<any>;
-  BOK_PERMALINK_PREFIX = 'https://gistbok-bok.ucgis.org/';
-  private URL_BASE = 'https://gistbok-bok.ucgis.org/';
+  BOK_PERMALINK_PREFIX = 'https://gistbok-topics.ucgis.org/';
+  private URL_BASE = 'https://gistbok-topics.ucgis.org/';
 
   constructor(db: AngularFireDatabase, private http: HttpClient) {
 
@@ -28,13 +28,6 @@ export class BokService {
         this.concepts = this.parseConcepts(data['current']['concepts']);
         this.relations = data['current']['relations'];
       });
-/*
-    db.list('current/concepts').valueChanges().subscribe(res => {
-      this.concepts = this.parseConcepts(res);
-    });
-    db.list('current/relations').valueChanges().subscribe(res => {
-      this.relations = res;
-    });*/
   }
 
   parseConcepts(dbRes) {
